@@ -19,7 +19,7 @@ st.subheader("Création d'un nouvel utilisateur")
 with st.form("create_user_form"):
     new_username = st.text_input("Identifiant")
     new_password = st.text_input("Mot de passe provisoire", type="password")
-    new_role = st.selectbox("Attribution du rôle", ["User", "Admin"])
+    new_role = st.selectbox("Attribution du rôle", ["User", "Admin","Manager","Commercial","Direction"])
     submit_create = st.form_submit_button("Créer le profil")
 
     if submit_create and new_username and new_password:

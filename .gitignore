@@ -2,3 +2,134 @@ venv/
 __pycache__/
 users.db
 .DS_Store
+# pages/2_IA.py
+import json
+import os
+import streamlit as st
+from core.security import check_access
+
+check_access()
+
+PRED_CACHE_PATH = os.path.join("core", "predictions_cache.json")
+
+st.set_page_config(page_title="IA — KPIs prédits", layout="wide")
+st.title("IA — KPIs prédits (sans graphiques)")
+
+role = st.session_state.get("role", "User")
+
+if not os.path.exists(PRED_CACHE_PATH):
+    st.error("Predictions cache introuvable. Lance d'abord: python -m core.ml (offline).")
+    st.stop()
+
+with open(PRED_CACHE_PATH, "r", encoding="utf-8") as f:
+    cache = json.load(f)
+
+st.caption(f"Généré le: {cache.get('generated_at','?')} | Rôle: {role}")
+
+# -------------------------
+# Helpers safe
+# -------------------------
+def fmt_num(x):
+    try:
+        return f"{float(x):,.0f}"
+    except Exception:
+        return "—"
+
+def fmt_pct(x):
+    try:
+        return f"{float(x)*100:.1f}%"
+    except Exception:
+        return "—"
+
+# -------------------------
+# KPIs IA (M+1 + Année)
+# -------------------------
+st.subheader("Prévisions — Mois prochain (M+1) & Année (12 mois)")
+
+m1 = cache.get("pred_month_next", {})
+y1 = cache.get("pred_year_next_12m", {})
+
+c1, c2, c3, c4 = st.columns(4)
+c1.metric("CA net prédit (M+1)", fmt_num(m1.get("pred_net_amount")))
+c2.metric("Quantité nette prédite (M+1)", fmt_num(m1.get("pred_net_qty")))
+c3.metric("Retours valeur prédits (M+1)", fmt_num(m1.get("pred_return_amount")))
+c4.metric("Taux retours valeur (M+1)", fmt_pct(m1.get("pred_return_rate_value")))
+
+c5, c6, c7, c8 = st.columns(4)
+c5.metric("CA net prédit (12 mois)", fmt_num(y1.get("pred_net_amount_12m")))
+c6.metric("Quantité nette prédite (12 mois)", fmt_num(y1.get("pred_net_qty_12m")))
+c7.metric("Retours valeur prédits (12 mois)", fmt_num(y1.get("pred_return_amount_12m")))
+c8.metric("Taux retours valeur (12 mois)", fmt_pct(y1.get("pred_return_rate_value_12m")))
+
+st.divider()
+
+# -------------------------
+# Pays (M+1)
+# -------------------------
+def show_country():
+    st.subheader("Pays — mois prochain (classement + % prédits)")
+    obj = cache.get("country_ranking_next_month", {})
+    st.metric("Mois prédit", obj.get("month", "—"))
+    st.dataframe(obj.get("top10", []), use_container_width=True)
+
+# -------------------------
+# Produits (M+1)
+# -------------------------
+def show_products():
+    st.subheader("Produits — mois prochain (Top 10 prédits)")
+    obj = cache.get("product_ranking_next_month", {})
+    st.metric("Mois prédit", obj.get("month", "—"))
+    st.dataframe(obj.get("top10", []), use_container_width=True)
+
+# -------------------------
+# NEW Anomalies (history only)
+# -------------------------
+def show_anomalies():
+    st.subheader("Anomalies automatiques (basées sur l'historique, pas sur le modèle)")
+
+    an = cache.get("anomalies", {})
+    sales = an.get("sales_drop", {})
+    ret = an.get("return_spike", {})
+
+    st.markdown("### 1) Chute anormale du CA net (dernier mois)")
+    a1, a2, a3 = st.columns(3)
+    a1.metric("Dernier mois", sales.get("last_month", "—"))
+    a2.metric("Anomalie ?", "OUI" if sales.get("is_anomaly") else "NON")
+    a3.metric("CA net dernier mois", fmt_num(sales.get("last_net_amount")))
+    st.caption(sales.get("what", ""))
+    st.caption(sales.get("reason", ""))
+    rules1 = sales.get("rules", [])
+    if rules1:
+        with st.expander("Règles utilisées", expanded=False):
+            for r in rules1:
+                st.write(f"- {r}")
+
+    st.markdown("### 2) Hausse anormale du taux de retour (dernier mois)")
+    b1, b2, b3 = st.columns(3)
+    b1.metric("Dernier mois", ret.get("last_month", "—"))
+    b2.metric("Anomalie ?", "OUI" if ret.get("is_anomaly") else "NON")
+    b3.metric("Taux retour (valeur)", fmt_pct(ret.get("last_return_rate_value")))
+    st.caption(ret.get("what", ""))
+    st.caption(ret.get("reason", ""))
+    rules2 = ret.get("rules", [])
+    if rules2:
+        with st.expander("Règles utilisées", expanded=False):
+            for r in rules2:
+                st.write(f"- {r}")
+
+# -------------------------
+# Role-based access
+# -------------------------
+if role in ["Direction", "Admin"]:
+    show_country()
+    show_products()
+    show_anomalies()
+
+elif role in ["Manager"]:
+    show_country()
+    show_products()
+    show_anomalies()
+
+else:  # Commercial/User
+    show_country()
+    show_products()
