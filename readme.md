@@ -1,4 +1,4 @@
-# 📊 Tableau de Bord Interactif - Iowa Liquor Sales
+#  Tableau de Bord Interactif - Iowa Liquor Sales
 
 > **Projet Académique - 2ème Année Génie Logiciel** > **Encadrant :** Prof. Meryem FAKHOURI AMR  
 
@@ -6,7 +6,7 @@ Ce projet consiste en la conception et le développement d'un tableau de bord an
 
 ---
 
-## 🏗️ Architecture Logicielle
+##  Architecture Logicielle
 
 Le projet adopte une architecture **"Streamlit Modulaire"** respectant le principe de Séparation des Préoccupations (Separation of Concerns). Cette structure garantit un code maintenable, sécurisé et évite le couplage fort entre la logique métier, l'accès aux données et l'interface utilisateur.
 
@@ -29,9 +29,9 @@ Dashboard_Projet/
 
 ```
 
-## ✨ Fonctionnalités Principales
+## Fonctionnalités Principales
 
-* **🔒 Sécurité & Authentification :**
+* ** Sécurité & Authentification :**
 * Système de connexion sécurisé avec hachage des mots de passe (Bcrypt).
 * Gestion des rôles (Role-Based Access Control) : Admin et User.
 * Protection des routes : redirection automatique si la session est expirée ou invalide.
@@ -43,18 +43,18 @@ Dashboard_Projet/
 * Graphiques interactifs (Plotly) avec filtres dynamiques (période, région, catégorie).
 
 
-* **🤖 Intelligence Artificielle :**
+* ** Intelligence Artificielle :**
 * Modèles prédictifs pour anticiper les ventes futures.
 * Segmentation (Clustering) pour identifier des comportements d'achat.
 
 
-* **⚙️ Administration :**
+* ** Administration :**
 * Interface dédiée pour la création de comptes utilisateurs.
 * Exportation des données brutes nettoyées (Format CSV).
 
 
 
-## 🛠️ Technologies Utilisées
+##  Technologies Utilisées
 
 * **Langage :** Python 3.9+
 * **Frontend / Framework :** Streamlit
@@ -64,7 +64,7 @@ Dashboard_Projet/
 * **Data Visualisation :** Plotly
 * **Machine Learning :** Scikit-Learn
 
-## 🚀 Installation et Déploiement Local
+##  Installation et Déploiement Local
 
 **1. Cloner le dépôt et se placer dans le dossier**
 
@@ -100,12 +100,12 @@ python3 -m streamlit run app.py
 
 L'application sera accessible sur `http://localhost:8501`. Utilisez les identifiants générés à l'étape 3 pour vous connecter.
 
-## 👥 Équipe du Projet et Répartition
+##  Équipe du Projet et Répartition
 
-* **Membre 1 :** Data Engineer / ETL (Extraction, Nettoyage, Dictionnaire de données)
-* **Ouidad (Membre 2) :** Backend & Sécurité (Authentification, SQLite, RBAC, Architecture)
-* **Membre 3 :** Data Analyst / DataViz (Calcul des KPIs, Tableaux de bord Plotly)
-* **Membre 4 :** Ingénieur Machine Learning (Modèles prédictifs, Mise en cache, Déploiement)
+* **Ayoub JNIEH :** Data Engineer / ETL (Extraction, Nettoyage, Dictionnaire de données)
+* **Ouidad EL BOJADDAINI :** Backend & Sécurité (Authentification, SQLite, RBAC, Architecture)
+* **Ikram MOULAY :** Data Analyst / DataViz (Calcul des KPIs, Tableaux de bord Plotly)
+* **Ghali BENYAHIA :** Ingénieur Machine Learning (Modèles prédictifs, Mise en cache, Déploiement)
 
 ```
 
