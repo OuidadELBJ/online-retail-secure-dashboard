@@ -31,24 +31,24 @@ Dashboard_Projet/
 
 ## Fonctionnalités Principales
 
-* ** Sécurité & Authentification :**
+* **Sécurité & Authentification :**
 * Système de connexion sécurisé avec hachage des mots de passe (Bcrypt).
 * Gestion des rôles (Role-Based Access Control) : Admin et User.
 * Protection des routes : redirection automatique si la session est expirée ou invalide.
 
 
-* **📈 Analyse de Données (Business Intelligence) :**
+* **Analyse de Données (Business Intelligence) :**
 * Suivi du Chiffre d'Affaires, volumes vendus, et marges bénéficiaires par zone géographique.
 * Analyse du panier moyen et identification des tops vendeurs/produits.
 * Graphiques interactifs (Plotly) avec filtres dynamiques (période, région, catégorie).
 
 
-* ** Intelligence Artificielle :**
+* **Intelligence Artificielle :**
 * Modèles prédictifs pour anticiper les ventes futures.
 * Segmentation (Clustering) pour identifier des comportements d'achat.
 
 
-* ** Administration :**
+* **Administration :**
 * Interface dédiée pour la création de comptes utilisateurs.
 * Exportation des données brutes nettoyées (Format CSV).
 
